@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenClaw Browser Extension — Settings</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --accent: #ff5a36;
+        --panel: color-mix(in oklab, canvas 92%, canvasText 8%);
+        --border: color-mix(in oklab, canvasText 18%, transparent);
+        --muted: color-mix(in oklab, canvasText 70%, transparent);
+        --shadow: 0 10px 30px color-mix(in oklab, canvasText 18%, transparent);
+        font-family: ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Rounded",
+          "SF Pro Display", "Segoe UI", sans-serif;
+        line-height: 1.4;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(1000px 500px at 10% 0%, color-mix(in oklab, var(--accent) 30%, transparent), transparent 70%),
+          radial-gradient(900px 450px at 90% 0%, color-mix(in oklab, var(--accent) 18%, transparent), transparent 75%),
+          canvas;
+        color: canvasText;
+      }
+      .wrap {
+        max-width: 820px;
+        margin: 36px auto;
+        padding: 0 24px 48px 24px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: color-mix(in oklab, var(--accent) 18%, transparent);
+        border: 1px solid color-mix(in oklab, var(--accent) 35%, transparent);
+        box-shadow: var(--shadow);
+        display: grid;
+        place-items: center;
+      }
+      .logo img {
+        width: 28px;
+        height: 28px;
+        image-rendering: pixelated;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+      .subtitle {
+        margin: 2px 0 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+      .card h2 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        letter-spacing: 0.01em;
+      }
+      .card p {
+        margin: 8px 0 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      input {
+        width: 160px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, canvas 92%, canvasText 8%);
+        color: canvasText;
+        outline: none;
+      }
+      input:focus {
+        border-color: color-mix(in oklab, var(--accent) 70%, transparent);
+        box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 20%, transparent);
+      }
+      button {
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+        background: linear-gradient(
+          180deg,
+          color-mix(in oklab, var(--accent) 80%, white 20%),
+          var(--accent)
+        );
+        color: white;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+      }
+      button:active {
+        transform: translateY(1px);
+      }
+      .hint {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      code {
+        font-family: ui-monospace, Menlo, Monaco, Consolas, "SF Mono", monospace;
+        font-size: 12px;
+      }
+      a {
+        color: color-mix(in oklab, var(--accent) 85%, canvasText 15%);
+      }
+      .status {
+        margin-top: 10px;
+        font-size: 12px;
+        color: color-mix(in oklab, var(--accent) 70%, canvasText 30%);
+        min-height: 16px;
+      }
+      .status[data-kind='ok'] {
+        color: color-mix(in oklab, #16a34a 75%, canvasText 25%);
+      }
+      .status[data-kind='error'] {
+        color: color-mix(in oklab, #ef4444 75%, canvasText 25%);
+      }
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: canvasText;
+        cursor: pointer;
+      }
+      .toggle-row input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--accent);
+        cursor: pointer;
+      }
+      /* Nested sections - conditionally visible based on parent checkbox */
+      .card.nested-hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="logo" aria-hidden="true">
+          <img src="icons/icon128.png" alt="" />
+        </div>
+        <div>
+          <h1>OpenClaw Browser Extension</h1>
+          <p class="subtitle">Sidebar chat and tab context for your AI assistant.</p>
+        </div>
+      </header>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Gateway Connection</h2>
+          <label for="gatewayUrl">Gateway WebSocket URL</label>
+          <div class="row">
+            <input id="gatewayUrl" type="text" placeholder="wss://your-gateway.example.com" style="width: min(520px, 100%)" />
+          </div>
+          <label for="token" style="margin-top: 10px">Gateway Token</label>
+          <div class="row">
+            <input id="token" type="password" autocomplete="off" style="width: min(520px, 100%)" />
+            <button id="saveGateway" type="button">Save</button>
+          </div>
+          <div class="hint">
+            WebSocket URL for the sidebar chat. Use <code>wss://</code> for HTTPS hosts or <code>ws://localhost:18789</code> for local.
+            Token must match <code>gateway.auth.token</code>.
+          </div>
+          <div class="status" id="gatewayStatus"></div>
+        </div>
+
+        <div class="card">
+          <h2>Voice / STT</h2>
+          <label for="sttUrl" style="margin-top: 10px">STT URL (optional — overrides gateway)</label>
+          <div class="row">
+            <input id="sttUrl" type="text" placeholder="https://whisper.example.com/v1/audio/transcriptions" style="width: min(400px, 100%)" />
+          </div>
+          <label for="sttApiKey" style="margin-top: 10px">STT API Key (optional)</label>
+          <div class="row">
+            <input id="sttApiKey" type="password" autocomplete="off" style="width: min(320px, 100%)" />
+          </div>
+          <label for="sttModel" style="margin-top: 10px">STT Model (optional)</label>
+          <div class="row">
+            <input id="sttModel" type="text" placeholder="deepdml/faster-whisper-large-v3-turbo-ct2" style="width: min(280px, 100%)" />
+            <button id="saveStt" type="button">Save</button>
+          </div>
+          <div class="hint">
+            Set STT URL to point directly at your Whisper server. If empty, falls back to gateway URL + <code>/v1/audio/transcriptions</code>.
+          </div>
+          <div class="status" id="sttStatus"></div>
+        </div>
+
+        <div class="card">
+          <h2>New Tab Page</h2>
+          <label class="toggle-row">
+            <input type="checkbox" id="ntpEnabled" checked />
+            <span>Use custom New Tab page (bookmark dashboard)</span>
+          </label>
+          <div class="hint">
+            When enabled, opening a new tab shows the OpenClaw bookmark dashboard.
+            Disable to use your browser's default new tab page. <strong>Requires extension reload after changing.</strong>
+          </div>
+          <div class="status" id="ntpStatus"></div>
+
+          <div id="ntpSubSettings" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;">
+            <h3 style="margin: 0 0 8px; font-size: 0.95em; opacity: 0.8;">Karakeep (Bookmarks Search)</h3>
+            <label for="karakeepUrl">Karakeep URL</label>
+            <div class="row">
+              <input id="karakeepUrl" type="text" placeholder="https://hoarder.example.com" style="width: min(320px, 100%)" />
+            </div>
+            <label for="karakeepApiKey" style="margin-top: 10px">API Key</label>
+            <div class="row">
+              <input id="karakeepApiKey" type="password" autocomplete="off" style="width: min(320px, 100%)" />
+              <button id="saveKarakeep" type="button">Save</button>
+            </div>
+            <div class="hint">
+              Enables bookmark search suggestions in New Tab. Leave empty to disable.
+            </div>
+            <div class="status" id="karakeepStatus"></div>
+
+            <h3 style="margin: 16px 0 8px; font-size: 0.95em; opacity: 0.8;">Homepage Dashboard</h3>
+            <label for="homepageUrl">Homepage URL</label>
+            <div class="row">
+              <input id="homepageUrl" type="text" placeholder="https://homepage.example.com" style="width: min(320px, 100%)" />
+              <button id="saveHomepage" type="button">Save</button>
+            </div>
+            <div class="hint">
+              Enables service search in New Tab. Uses Homepage (gethomepage.dev) API.
+            </div>
+            <div class="status" id="homepageStatus"></div>
+          </div>
+        </div>
+      </div>
+
+      <script type="module" src="options.js"></script>
+    </div>
+  </body>
+</html>

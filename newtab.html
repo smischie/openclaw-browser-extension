@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Tab</title>
+  <link rel="stylesheet" href="newtab.css" />
+  <script src="newtab-guard.js"></script>
+</head>
+<body>
+
+  <!-- Search bar -->
+  <div class="search-wrapper">
+    <div class="search-container" style="position:relative;">
+      <svg class="search-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search or enter a URL…"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <kbd class="search-hint" id="search-hint">/ or Ctrl+K</kbd>
+      <!-- Suggest dropdown populated by JS -->
+      <div class="search-suggest-dropdown" id="search-suggest" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Bookmarks section -->
+  <div id="main-content">
+    <div id="empty-state" class="empty-state" style="display:none;">
+      <div class="empty-icon">🔖</div>
+      <p>No bookmarks yet</p>
+    </div>
+  </div>
+
+  <!-- Homepage iframe below bookmarks -->
+  <div class="homepage-wrapper">
+    <iframe
+      id="homepage-iframe"
+      class="homepage-frame"
+      src=""
+      loading="eager"
+      scrolling="no"
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+    ></iframe>
+    <div id="offline-banner" class="offline-banner" style="display:none;">
+      <span>🥫 Hive Offline</span>
+    </div>
+  </div>
+
+  <!-- Top-right hamburger menu -->
+  <div class="hamburger-wrapper">
+    <button class="hamburger-btn" id="hamburger-btn" title="Menu" aria-label="Menu">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="hamburger-menu" id="hamburger-menu" style="display:none;">
+      <button class="menu-item" id="menu-add-btn">➕ Add bookmark</button>
+      <button class="menu-item" id="menu-import-pins-btn">📌 Import pinned tabs</button>
+      <button class="menu-item" id="menu-import-browser-btn">⭐ Import from browser favorites</button>
+      <div class="menu-divider"></div>
+      <button class="menu-item" id="menu-export-btn">⬇️ Export bookmarks</button>
+      <button class="menu-item" id="menu-import-json-btn">⬆️ Import bookmarks</button>
+      <div class="menu-divider"></div>
+      <button class="menu-item" id="menu-clear-favicons-btn">🔄 Refresh favicons</button>
+    </div>
+  </div>
+
+  <!-- Add/Edit Bookmark Modal -->
+  <div class="modal-overlay" id="bookmark-modal" style="display:none;">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Add Bookmark</h2>
+        <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="field-label" for="bm-title">Title</label>
+        <input class="field-input" id="bm-title" type="text" placeholder="My Bookmark" autocomplete="off" />
+
+        <label class="field-label" for="bm-url">URL</label>
+        <input class="field-input" id="bm-url" type="url" placeholder="https://example.com" autocomplete="off" />
+
+        <label class="field-label" for="bm-category">Category</label>
+        <select class="field-input" id="bm-category">
+          <!-- populated by JS -->
+        </select>
+
+        <input class="field-input" id="bm-new-category" type="text" placeholder="New category name…" style="display:none; margin-top:8px;" autocomplete="off" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-cancel">Cancel</button>
+        <button class="btn btn-primary" id="modal-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden file input for JSON import -->
+  <input type="file" id="import-file" accept=".json" style="display:none;" />
+
+  <!-- Context menu -->
+  <div class="ctx-menu" id="ctx-menu" style="display:none;">
+    <button class="ctx-item" id="ctx-edit">✏️ Edit</button>
+    <button class="ctx-item ctx-danger" id="ctx-delete">🗑️ Delete</button>
+  </div>
+
+  <script src="newtab.js"></script>
+</body>
+</html>

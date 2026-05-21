@@ -1,0 +1,77 @@
+{
+  "manifest_version": 3,
+  "name": "OpenClaw Browser Extension",
+  "version": "1.0.0",
+  "description": "Sidebar chat and tab context for OpenClaw. Chat with your AI assistant alongside any webpage.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "activeTab",
+    "bookmarks",
+    "storage",
+    "alarms",
+    "webNavigation",
+    "sidePanel",
+    "declarativeNetRequest",
+    "scripting",
+    "contextMenus",
+    "offscreen",
+    "favicon"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*",
+    "ws://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "OpenClaw — click to open sidebar",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; img-src 'self' data: https: http:; frame-src https: http:; connect-src ws://*:* wss://*:* http://*:* https://*:*;"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "mic-permission.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  }
+}
