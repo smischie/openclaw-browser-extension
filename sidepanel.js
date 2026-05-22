@@ -1132,7 +1132,7 @@ async function doConnect() {
     const signature = await signDevicePayload(deviceIdentity.privateKey, sigPayload);
 
     const connectParams = {
-      minProtocol: 3, maxProtocol: 3,
+      minProtocol: 3, maxProtocol: 4,
       auth: token ? { token } : undefined,
       role, scopes,
       client: { id: clientId, displayName: displayName || 'OpenClaw', version: extVersion, mode: clientMode, platform: navigator.platform || 'browser' },
